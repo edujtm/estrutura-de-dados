@@ -1,26 +1,11 @@
+/*
+	Na hora de compilar o codigo deixar o arquivo QuickSort na mesma pasta do Ex3
+	ou entao adicionar o caminho da pasta como argumento da compilacao:
+	javac Ex3.java -cp c:/algum_local/pasta_do_arquivo/
+	O arquivo .class do quicksort ja deve estar na pasta
+*/
 
-// Classe Quicksort a ser completada
-class Quicksort {
-
-    static void swap(int[] a, int i, int j) {
-        // a ser completada
-    }
-
-    static int partition(int[] a, int l, int r) {
-        return 0; // a ser completada
-    }
-
-    static void quickrec(int[] a, int l, int r) {
-        // a ser completada
-    }
-
-    static void quicksort(int[] a) {
-        // a ser completada
-    }
-
-}
-
-// A classe Ex3 é fornecida, para testar o código de Quicksort
+// A classe Ex3 e fornecida, para testar o codigo de Quicksort
 class Ex3 {
     static boolean is_sorted(int[] a) {
         for (int i = 1; i < a.length; i++)
@@ -28,7 +13,7 @@ class Ex3 {
         return true;
     }
 
-    static final int M = 10; // os elementos estão entre 0..M-1
+    static final int M = 10; // os elementos estao entre 0..M-1
 
     static int[] occurrences(int[] a) {
         int[] occ = new int[M];
@@ -61,7 +46,7 @@ class Ex3 {
         int v = a[l];
         System.out.println("  teste com      a = " + print(a) + " v = " + v);
         int[] occ1 = occurrences(a);
-        int m = Quicksort.partition(a,l,r);
+        int m = QuickSort.partition(a,l,r);
         System.out.println("  partition(a,"+l+","+r+") = " + print(a) + " m = " + m);
         int[] occ2 = occurrences(a);
         if (!is_permut(occ1, occ2)) {
@@ -78,7 +63,7 @@ class Ex3 {
     static void test(int[] a) {
         System.out.println("  teste com       a = " + print(a));
         int[] occ1 = occurrences(a);
-        Quicksort.quicksort(a);
+        QuickSort.quicksort(a);
         int[] occ2 = occurrences(a);
         System.out.println("  quicksort(a) => a = " + print(a));
         if (!is_sorted(a)) {
