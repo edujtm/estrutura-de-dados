@@ -50,6 +50,13 @@ class State {
      */
     State(State* s, int c, int d) {
         // A SER COMPLETADO
+        this->c = c;
+        this->d = d;
+        prev = s;
+        for (int i = 0; i < s->pos.size(); ++i) {
+            pos.push_back(s->pos[i]);
+        }
+        pos[c] += d;
     }
 
     // nós ganhamos?
@@ -144,6 +151,20 @@ class RushHour {
     /* inicializa o 'free' acima */
     void initFree(State* s) {
         // A SER COMPLETADA
+        for (int i = 0; i < 6; ++i) {
+            for (int j = 0; j < 6; ++j) {
+                free[i][j] = true;
+            }
+        }
+        for (int i = 0; i < s->pos.size(); ++i) {
+            for (int j = 0; j < len[i]; ++j) {
+                if (horiz[i] == true) {
+                    free[moveon[i]][s->pos[i]+j] = false;
+                } else {
+                    free[s->pos[i]+j][moveon[i]] = false;
+                }
+            }
+        }
     }
 
     /*
@@ -154,19 +175,30 @@ class RushHour {
         initFree(s);
         list<State*> l;
         // A SER COMPLETADA
+        for (int i = 0; i < s->pos.size(); ++i) {
+            if (horiz[i] == true) {
+                    if (s->pos[i]+len[i] < 6 && free[moveon[i]][s->pos[i]+len[i]] == true) l.push_back(new State(s, i, +1));
+                    if (s->pos[i]-1 >= 0 && free[moveon[i]][s->pos[i]-1] == true) l.push_back(new State(s, i, -1));
+            } else {
+                    if (s->pos[i]+len[i] < 6 && free[s->pos[i]+len[i]][moveon[i]] == true) l.push_back(new State(s, i, +1));
+                    if (s->pos[i]-1 >= 0 && free[s->pos[i]-1][moveon[i]] == true) l.push_back(new State(s, i, -1));
+            }
+        }
+
         return l;
     }
 
     /*
      * procura uma solução a partir de s
      */
+     /*
     State* solve(State* s) {
         hash_set<State*,hash_state,eq_state> visited;
         visited.insert(s);
         queue<State*> Q;
         Q.push(s);
         while (!Q.empty()) {
-            State *atual = Q.pop_back();
+            State *atual = Q.pop();
             list<State*> novos_estados = moves(atual);
 
             for(int i; ){
@@ -183,7 +215,7 @@ class RushHour {
         }
         cerr << "sem solução" << endl; exit(1);
     }
-
+    */
     /*
      * imprime uma solução
      */
@@ -192,9 +224,55 @@ class RushHour {
         // A SER COMPLETADO
     }
 
+
+    void test2()
+    {
+        nbcars = 8;
+        bool horiz1[] = {true, true, false, false, true, true, false, false};
+        horiz.assign(horiz1, horiz1+8);
+        int len1[] = {2,2,3,2,3,2,3,3};
+        len.assign(len1,len1+8);
+        int moveon1[] = {2,0,0,0,5,4,5,3};
+        moveon.assign(moveon1,moveon1+8);
+        int start1[] = {1,0,1,4,2,4,0,1};
+        vector<int> start(start1,start1+8);
+        State* s = new State(start);
+        initFree(s);
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6; j++)
+                cout << free[i][j] << "\t";
+            cout << endl;
+        }
+    }
+
+    void test3()
+    {
+        nbcars = 12;
+        bool horiz1[] = {
+            true, false, true, false, false, true, false, true,
+            false, true, false, true
+        };
+        horiz.assign(horiz1, horiz1+nbcars);
+        int len1[] = {2,2,3,2,3,2,2,2,2,2,2,3};
+        len.assign(len1,len1+12);
+        int moveon1[] = {2,2,0,0,3,1,1,3,0,4,5,5};
+        moveon.assign(moveon1,moveon1+nbcars);
+        int start1[] = {1,0,3,1,1,4,3,4,4,2,4,1};
+        vector<int> start(start1,start1+nbcars);
+        State* s = new State(start);
+        int start02[] = {1,0,3,1,1,4,3,4,4,2,4,2};
+        vector<int> start2(start02,start02+nbcars);
+        State* s2 = new State(start2);
+        int n = 0;
+        for (list<State*> L = moves(s); !L.empty(); n++) L.pop_front();
+        cout << n << endl;
+        n = 0;
+        for (list<State*> L = moves(s2); !L.empty(); n++) L.pop_front();
+        cout << n << endl;
+    }
+
 };
-
-
 
 
 void test1() {
@@ -227,8 +305,8 @@ void test1() {
 }
 
 
-
 int main(){
-
+    RushHour rush;
+    rush.test3();
 	return 0;
-	}
+}
