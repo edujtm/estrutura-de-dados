@@ -23,14 +23,4 @@ int main(){
   lista3->filtrarCandidatos(0);
   cout << "lista de " << lista3->tamanho() << " candidatos: " << lista3->toString() << endl << endl;
 
-
-
-
-  
-  
-  
-  
-  
- 
-
 }

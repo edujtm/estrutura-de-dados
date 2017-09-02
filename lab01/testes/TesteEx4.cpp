@@ -8,5 +8,6 @@ int main(){
   ListaCandidatos* lista = new ListaCandidatos("candidatsBourgogne.txt");
   cout << "lista de " << lista->tamanho() << " candidatos: " << lista->toString() << endl;
 
+  delete lista;
 
 }

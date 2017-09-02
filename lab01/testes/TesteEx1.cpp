@@ -1,7 +1,7 @@
 #include <cstring>
 #include <iostream>
-#include "Candidato.h"
-#include "NoCandidato.h"
+#include "../headers/candidato.h"
+#include "../headers/NoCandidato.h"
 
 
 using namespace std;

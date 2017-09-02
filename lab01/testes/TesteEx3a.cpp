@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ListaCandidatos.h"
+#include "headers/ListaCandidatos.h"
 
 
 using namespace std;
@@ -7,10 +7,14 @@ using namespace std;
 int main(){
 
   ListaCandidatos* lista = new ListaCandidatos();
-  lista->adicioneComoHead(new Candidato("FONFEC Sophie 13"));
+  Candidato fonfec("FONFEC Sophie 13");
+  lista->adicioneComoHead(fonfec);
   cout << "Numero de nos da lista: " << lista->tamanho() << endl;
-  lista->adicioneComoHead(new Candidato("HADY Jacques 7"));
-  lista->adicioneComoHead(new Candidato("ZAPPA Frank 2"));
+  Candidato hady("HADY Jacques 7");
+  lista->adicioneComoHead(hady);
+  Candidato zappa("ZAPPA Frank 2");
+  lista->adicioneComoHead(zappa);
   cout << "Numero de nos da lista: " << lista->tamanho() << endl;
 
+  delete lista;
 }
