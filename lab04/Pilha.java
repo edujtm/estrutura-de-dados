@@ -8,7 +8,7 @@ public class Pilha<X> {
 	public Pilha() {
 			conteudo = new LinkedList<>();
 	}	
-
+	
 	public boolean estaVazia() {
 		return conteudo.isEmpty();
 	}

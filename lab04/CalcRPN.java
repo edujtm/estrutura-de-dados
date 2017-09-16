@@ -1,6 +1,8 @@
 import java.io.*;
 
 public class CalcRPN {
+
+	// --- Atributos ---
     
     private class Operacao {
         
@@ -14,6 +16,7 @@ public class CalcRPN {
         }
         
         public Operacao(Double a) {
+        	this.code = 'e';
             this.a = a;
         }
     }
@@ -21,16 +24,25 @@ public class CalcRPN {
     private Pilha<Double> aPilha;
     private Pilha<Operacao> hist;
     
-    public CalcRPN() throws Error {
-        aPilha = new Pilha<>();
-        hist = new Pilha<>();
-        throw new Error("a ser completado");
+    // --- Construtor ---
+
+    public CalcRPN() {
+    	try {
+        	aPilha = new Pilha<>();
+       		hist = new Pilha<>();
+    	} catch (Exception e) {
+	        throw new Error("a ser completado");
+	    }
     }
     
-    public void mais() throws Error {
+    // --- Métodos ---
+
+    public void mais() {
         try {
-            op1 = aPilha.desempilha();
-            op2 = aPilha.desempilha();
+            Double op1 = aPilha.desempilha();
+            Double op2 = aPilha.desempilha();
+            Operacao op = new Operacao('+', op2, op1);
+            hist.empilha(op);
             Double resultado = op1 + op2;
             aPilha.empilha(resultado);
         } catch (Error e) {
@@ -38,10 +50,12 @@ public class CalcRPN {
         }
     }
     
-    public void menos() throws Error {
+    public void menos() {
         try {
-            op1 = aPilha.desempilha();
-            op2 = aPilha.desempilha();
+            Double op1 = aPilha.desempilha();
+            Double op2 = aPilha.desempilha();
+            Operacao op = new Operacao('-', op2, op1);
+            hist.empilha(op);
             Double resultado = op2 - op1;
             aPilha.empilha(resultado);
         } catch (Error e) {
@@ -49,10 +63,11 @@ public class CalcRPN {
         }
     }
     
-    public void vezes() throws Error {
+    public void vezes() {
         try {
-            op1 = aPilha.desempilha();
-            op2 = aPilha.desempilha();
+            Double op1 = aPilha.desempilha();
+            Double op2 = aPilha.desempilha();
+            Operacao op = new Operacao('*', op2, op1);
             Double resultado = op1 * op2;
             aPilha.empilha(resultado);
         } catch (Error e) {
@@ -61,14 +76,111 @@ public class CalcRPN {
     }
     
     public void dividido() {
-        throw new Error("a ser completado");
+    	try {
+    		Double op1 = aPilha.desempilha();
+    		Double op2 = aPilha.desempilha();
+    		Operacao op = new Operacao('/', op2, op1);
+    		hist.empilha(op);
+    		Double resultado = op2 / op1;
+    		aPilha.empilha(resultado);
+    	} catch (Error e) {
+        	throw new Error("Erro ao fazer operacao de divisao");
+        }
     }
     
     public Double resultado() {
-        throw new Error("a ser completado");
+    	try {
+    		return aPilha.topo();
+    	} catch (Error e) {
+        	throw new Error("a pilha está vazia");
+    	}
     }
     
     public void exec(String cmd) {
-        throw new Error("a ser completado");
+    	try {
+    		Double valor = Double.parseDouble(cmd);
+    		Operacao op = new Operacao(valor);
+    		hist.empilha(op);
+    		aPilha.empilha(valor);
+    	} catch (NumberFormatException e) {
+    		switch (cmd) {
+    			case "+":
+    				mais();
+    				break;
+    			case "-":
+    				menos();
+    				break;
+    			case "*":
+    				vezes();
+    				break;
+    			case "/":
+    				dividido();
+    				break;
+    			default:
+    				throw new Error("A operacao nao é suportada pelo programa");
+    		}
+    	} catch (NullPointerException e) {
+    		throw new Error("A string passada não foi inicializada (null)");
+    	} 
     }
+
+    // --- Testes ---
+
+    static void interfaceUsuario() throws IOException {
+		CalcRPN calc = new CalcRPN();
+		String line;
+		BufferedReader reader = new BufferedReader (new InputStreamReader (System.in));
+		while((line = reader.readLine()) != null) {
+			if (line.isEmpty()) 
+				continue;
+			for (String s : line.split(" ")) 
+				calc.exec(s);
+			System.out.println("Pilha = " + calc.aPilha);
+		}
+		System.out.println("Até logo");
+	}
+
+    private static void test() {
+		CalcRPN calc = new CalcRPN() ;
+		System.out.print("3 2 + = ");
+		calc.aPilha.empilha(3.0);
+		calc.aPilha.empilha(2.0);
+		calc.mais();
+		System.out.println(calc.resultado());
+		calc = new CalcRPN();
+		System.out.print("3 2 - = ");
+		calc.aPilha.empilha(3.0);
+		calc.aPilha.empilha(2.0);
+		calc.menos();
+		System.out.println(calc.resultado());
+		calc = new CalcRPN();
+		System.out.print("3 2 * = ");
+		calc.aPilha.empilha(3.0);
+		calc.aPilha.empilha(2.0);
+		calc.vezes();
+		System.out.println(calc.resultado());calc = new CalcRPN();
+		System.out.print("3 2 / = ");
+		calc.aPilha.empilha(3.0);
+		calc.aPilha.empilha(2.0);
+		calc.dividido();
+		System.out.println(calc.resultado());
+		calc = new CalcRPN();
+		System.out.print("1 2 + 3 4 - / 10 3 - * = ");
+		calc.aPilha.empilha(1.0);
+		calc.aPilha.empilha(2.0);
+		calc.mais();
+		calc.aPilha.empilha(3.0);
+		calc.aPilha.empilha(4.0);
+		calc.menos();
+		calc.dividido();
+		calc.aPilha.empilha(10.0);
+		calc.aPilha.empilha(3.0);
+		calc.menos();
+		calc.vezes();
+		System.out.println(calc.resultado());
+	}
+
+	public static void main(String[] args) throws IOException {
+		interfaceUsuario();
+	}
 }
