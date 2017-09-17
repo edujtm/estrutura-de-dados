@@ -1,5 +1,7 @@
 import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.lang.StringBuilder;
 
 public class Pilha<X> {
 
@@ -8,7 +10,7 @@ public class Pilha<X> {
 	public Pilha() {
 			conteudo = new LinkedList<>();
 	}	
-	
+
 	public boolean estaVazia() {
 		return conteudo.isEmpty();
 	}
@@ -33,9 +35,24 @@ public class Pilha<X> {
 		}
 	}
 
+	public void reinicialize() {
+		conteudo.clear();
+	}
+
 	@Override
 	public String toString() {
 		return conteudo.toString();
+	}
+
+	public String toStringInverse() {
+		StringBuilder sb = new StringBuilder("[");
+		Iterator<X> it = conteudo.descendingIterator();
+		while (it.hasNext()) {
+			sb.append(it.next());
+			if (it.hasNext()) sb.append(", "); // Ãdiciona virgula se ainda tiver algo em conteudo apos o .next().
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 
 	private static void test1() {
