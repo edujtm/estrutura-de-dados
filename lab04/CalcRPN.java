@@ -19,6 +19,15 @@ public class CalcRPN {
         	this.code = 'e';
             this.a = a;
         }
+
+        @Override
+        public String toString() {
+        	if (this.code == 'e') {
+        		return Double.toString(a);
+        	} else {
+        		return Character.toString(this.code);
+        	}
+        }
     }
     
     private Pilha<Double> aPilha;
@@ -68,6 +77,7 @@ public class CalcRPN {
             Double op1 = aPilha.desempilha();
             Double op2 = aPilha.desempilha();
             Operacao op = new Operacao('*', op2, op1);
+            hist.empilha(op);
             Double resultado = op1 * op2;
             aPilha.empilha(resultado);
         } catch (Error e) {
@@ -95,6 +105,35 @@ public class CalcRPN {
         	throw new Error("a pilha está vazia");
     	}
     }
+
+    public void cancela() {
+    	Operacao ultima = hist.desempilha();
+    	switch (ultima.code) {
+    		case 'e':
+    			aPilha.desempilha();
+    			break;
+    		case '+':
+    			aPilha.desempilha();
+    			aPilha.empilha(ultima.a);
+    			aPilha.empilha(ultima.b);
+    			break;
+    		case '-':
+    			aPilha.desempilha();
+    			aPilha.empilha(ultima.a);
+    			aPilha.empilha(ultima.b);
+    			break;
+    		case '*':
+    			aPilha.desempilha();
+    			aPilha.empilha(ultima.a);
+    			aPilha.empilha(ultima.b);
+    			break;
+    		case '/':
+    			aPilha.desempilha();
+    			aPilha.empilha(ultima.a);
+    			aPilha.empilha(ultima.b);
+    			break;
+    		}
+    }
     
     public void exec(String cmd) {
     	try {
@@ -116,6 +155,17 @@ public class CalcRPN {
     			case "/":
     				dividido();
     				break;
+    			case "clear":
+    				aPilha.reinicialize();
+    				hist.reinicialize();
+    				break;
+    			case "hist":
+    				System.out.println("Historico = " + hist);
+    				break;
+    			case "undo":
+    				cancela();
+    				System.out.println("Historico = " + hist);
+    				break;
     			default:
     				throw new Error("A operacao nao é suportada pelo programa");
     		}
@@ -131,12 +181,17 @@ public class CalcRPN {
 		String line;
 		BufferedReader reader = new BufferedReader (new InputStreamReader (System.in));
 		while((line = reader.readLine()) != null) {
-			if (line.isEmpty()) 
+			if (line.isEmpty()) {
 				continue;
-			for (String s : line.split(" ")) 
+			} else if (line.equals("quit")) {
+				break;
+			}
+			for (String s : line.split(" ")) { 
 				calc.exec(s);
-			System.out.println("Pilha = " + calc.aPilha);
+			}
+			System.out.println("Pilha = " + calc.aPilha.toStringInverse());
 		}
+
 		System.out.println("Até logo");
 	}
 
@@ -180,7 +235,23 @@ public class CalcRPN {
 		System.out.println(calc.resultado());
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void testeOperacao() {
+		Operacao[] op = new Operacao[9];
+		op[0] = new Operacao(16.0);
+		op[1] = new Operacao(8.0);
+		op[2] = new Operacao(4.0);
+		op[3] = new Operacao(2.0);
+		op[4] = new Operacao(1.0);
+		op[5] = new Operacao('+', 2.0, 1.0);
+		op[6] = new Operacao('-', 4.0, 3.0);
+		op[7] = new Operacao('*', 8.0, 1.0);
+		op[8] = new Operacao('/', 16.0, 8.0);
+		for (int i=0; i<op.length; i++)
+			System.out.print(op[i] + " ");
+		System.out.println();
+	}
+
+	public static void main (String[] args) throws IOException {
 		interfaceUsuario();
 	}
 }
