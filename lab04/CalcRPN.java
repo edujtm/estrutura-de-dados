@@ -4,7 +4,7 @@ public class CalcRPN {
 
 	// --- Atributos ---
     
-    private static class Operacao {
+    private class Operacao {
         
         private char code;
         private Double a, b;
