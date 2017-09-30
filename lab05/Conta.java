@@ -1,4 +1,3 @@
-import SecurityHandler;
 
 public class Conta {
 
@@ -13,6 +12,7 @@ public class Conta {
 		this.agencia = agencia;
 		this.numero = numero;
 		this.senha = senha;
+		this.md5 = SecurityHandler.md5ToServer(this);
 	}
 
 	public Conta(String agencia, String numero, String senha, String saldo, String nomeCliente) {
@@ -21,6 +21,7 @@ public class Conta {
 		this.senha = senha;
 		this.saldo = saldo;
 		this.nomeCliente = nomeCliente;
+		this.md5 = SecurityHandler.md5ToServer(this);
 	}
 
 	public Conta(String nomeCliente, String saldo) {
@@ -52,12 +53,12 @@ public class Conta {
 		return agencia;
 	}
 
-	public void setConta(String conta) {
-		this.conta = conta;
+	public void setNumeroConta(String conta) {
+		this.numero = numero;
 	}
 
-	public String getConta() {
-		return conta;
+	public String getNumeroConta() {
+		return numero;
 	}
 
 	public void setSenha(String senha) {
@@ -77,12 +78,14 @@ public class Conta {
 	}
 
 	@Override
-	public void toString() {
-		System.out.println("AGENCIA: " + agencia);
-		System.out.println("CONTA: " + conta);
-		System.out.println("SENHA: " + senha);
-		System.out.println("NOME CLIENTE: " + nomeCliente);
-		System.out.println("SALDO: " + saldo);
-		System.out.println("MD5: " + md5);
+	public String toString() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append("AGENCIA: " + agencia + "\n");
+		sb.append("CONTA: " + numero + "\n");
+		sb.append("SENHA: " + senha + "\n");
+		sb.append("NOME CLIENTE: " + nomeCliente + "\n");
+		sb.append("SALDO: " + saldo + "\n");
+		sb.append("MD5: " + md5 + "\n");
+		return sb.toString();
 	}
 }

@@ -2,16 +2,18 @@ import java.security.MessageDigest;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 // Classe que irá possuir os metodos de tradução das entradas e saidas do banco de dados
 
 public class SecurityHandler {
 
+	public static final String salt = "5a1t";
+
 	public static String md5(String stringToConvert)
 	{
 		String hashtext="";
 		// salt é uma string aleatória qualquer
-		salt = "rickmorty"
 		stringToConvert += salt;
 		MessageDigest m;
 		try
@@ -25,14 +27,25 @@ public class SecurityHandler {
 			// e o segundo a magnitude
 			BigInteger bigInt = new BigInteger(1,digest);
 			hashtext = bigInt.toString(16);
-			
+
 		}
 		catch (NoSuchAlgorithmException ex)
 		{
-			//Logger.getLogger(SecurityProvider.class.getName());
-			log(Level.SEVERE, null, ex);
+			Logger mylogger = Logger.getLogger(SecurityHandler.class.getName());
+			mylogger.log(Level.SEVERE, null, ex);
 		}
 		return hashtext;
+	}
+
+	public static String md5ToServer(Conta conta) {
+		StringBuilder sb = new StringBuilder("");
+		sb.append(conta.getAgencia());
+		sb.append(conta.getNumeroConta());
+		sb.append(conta.getSenha());
+		// Tá adicionando o sal duas vezes pra ficar mais saboroso. Só avisando pra quem tem pressão alta.
+		sb.append(salt);
+		String result = md5(sb.toString());
+		return result;
 	}
 
 }
