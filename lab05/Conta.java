@@ -74,7 +74,7 @@ public class Conta {
 	}
 
 	public String getMD5() {
-		return md5;
+		return this.md5;
 	}
 
 	@Override
@@ -87,5 +87,13 @@ public class Conta {
 		sb.append("SALDO: " + saldo + "\n");
 		sb.append("MD5: " + md5 + "\n");
 		return sb.toString();
+	}
+
+	@Override
+	public boolean equals(Object rhs) {
+		if (rhs instanceof Conta) {
+			return this.md5.equals(((Conta) rhs).md5);
+		}
+		return false;
 	}
 }

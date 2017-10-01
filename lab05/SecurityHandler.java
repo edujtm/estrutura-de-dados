@@ -42,10 +42,20 @@ public class SecurityHandler {
 		sb.append(conta.getAgencia());
 		sb.append(conta.getNumeroConta());
 		sb.append(conta.getSenha());
-		// Tá adicionando o sal duas vezes pra ficar mais saboroso. Só avisando pra quem tem pressão alta.
+		// Adding salt twice because i'm a Master Chef.
 		sb.append(salt);
 		String result = md5(sb.toString());
 		return result;
 	}
 
+	public static String[] md5ToClient(Conta conta) {
+		String toCrypt = conta.getNomeCliente() + " " + conta.getSaldo();
+		String[] cryptedChars = new String[toCrypt.length()];
+		for (int i = 0; i < toCrypt.length(); ++i) {
+			String charToCrypt = Character.toString(toCrypt.charAt(i));
+			cryptedChars[i] = md5(charToCrypt);
+		}
+
+		return cryptedChars;
+	}
 }
