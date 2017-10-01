@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 
 public class Testes {
@@ -29,6 +30,7 @@ public class Testes {
 		System.out.println("Testando Criptografia");
 		System.out.println("0x" + SecurityHandler.md5("teste"));
 	}
+
 
 	// Testa se a criptografia da conta está correta
 	public static void test2() {
