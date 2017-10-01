@@ -1,16 +1,19 @@
+import java.util.ArrayList;
 
 public class Testes {
 
 	public static void main(String[] args) {
-		test4();
+		test7();
 	}
 
+	// testa conversão de letras de int para char pela tabela ASCII
 	public static void testASCII() {
 		for (int i = 97; i < 97 + 26; ++i) {
 			System.out.println(((char) i));
 		}
 	}
 
+	// Testa os diferentes construtores de contas
 	public static void testConta() {
 		System.out.println("Testando contas: ");
 		Conta c1 = new Conta("124", "333", "1234", "10", "john doe");
@@ -21,17 +24,20 @@ public class Testes {
 		System.out.println(c3);
 	}
 
+	// testa se o metodo de criptografia de strings está funcionando corretamente
 	public static void test1() {
 		System.out.println("Testando Criptografia");
 		System.out.println("0x" + SecurityHandler.md5("teste"));
 	}
 
+	// Testa se a criptografia da conta está correta
 	public static void test2() {
 		System.out.println("Testando mensagem criptografada pra servidor: ");
 		Conta c = new Conta("1234", "2222", "1245");
 		System.out.println("0x" + SecurityHandler.md5ToServer(c));
 	}
 
+	// Testa inserção e recuperação de contas no banco de dados
 	public static void test3() {
 
 		// Tenta inserir a conta no banco de dados
@@ -69,6 +75,7 @@ public class Testes {
 		}
 	}
 
+	// Testa resposta do servidor como um array de caracteres
 	public static void test4()
 	{
 		Conta c = new Conta("124", "333", "1234","10", "john doe");
@@ -81,5 +88,43 @@ public class Testes {
 		{
 			System.out.println(chars[i]);
 		}
+	}
+
+	public static void test6() {
+
+		//Testando para todas as letras. Criei o array para facilitar a visualização
+		ArrayList<Character> caracteres = new ArrayList<>();
+		for (char c = 'a'; c <= 'z'; ++c) {
+			caracteres.add(c);
+			System.out.print(c + " ");
+			caracteres.add(Character.toUpperCase(c));
+			System.out.print(Character.toUpperCase(c) + " ");
+		}
+
+		for (char c = '0'; c <= '9'; ++c) {
+			caracteres.add(c);
+			System.out.print(c + " ");
+		}
+
+		System.out.println();
+		for (int i = 0; i < caracteres.size(); ++i) {
+			char c = caracteres.get(i);
+			String md5 = SecurityHandler.md5(Character.toString(c));
+			char cc = Database.getLetra(md5);
+			System.out.print(cc + " ");
+		}
+		System.out.println();
+	}
+
+	// Testa a tradução do md5 retornado para o nome e o saldo do cliente;
+	public static void test7()
+	{
+		Conta c = new Conta("124", "333", "1234","10", "john doe");
+		ServerDatabase.insereConta(c);
+		String chave = SecurityHandler.md5ToServer(c);
+		Conta conta = ServerDatabase.getConta(chave);
+		String chars[];
+		chars = SecurityHandler.md5ToClient(conta);
+		System.out.println(Database.getConta(chars));
 	}
 }
