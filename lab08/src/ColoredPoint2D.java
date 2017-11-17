@@ -1,3 +1,5 @@
+package src;
+
 import java.awt.Color;
 
 // A colored point in the plane

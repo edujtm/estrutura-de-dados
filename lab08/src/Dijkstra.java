@@ -1,19 +1,34 @@
+package src;
+
 import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 // Algoritmo de Dijkstra
 public class Dijkstra {
 	final Graph g; 
 	final int n; 
 	final int source; 
-	final int dest; 
+	final int dest;
+        final int[] dist;
+        final int[] pred;
+        final boolean[] settled;
+        final PriorityQueue<Node> S;
 	Fenetre f; 
 
 	// construtor
-	Dijkstra(Graph g, int source, int   dest) {
+	Dijkstra(Graph g, int source, int dest) {
 		this.g = g;
 		n = g.n;
 		this.source = source;
 		this.dest = dest;
+                
+                dist = new int[n];
+                pred = new int[n];
+                settled = new boolean[n];
+                S = new PriorityQueue<>();
+                
+                pred[source] = source;
+                settled[source] = false;
 	}
 	
 	// atualizacao da distancia, da prioridade, e do predecessor de um no

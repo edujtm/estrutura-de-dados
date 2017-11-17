@@ -1,4 +1,6 @@
 
+package src;
+
 // arco de um grafo
 public class Arc {
 	int origin; 

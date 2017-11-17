@@ -1,3 +1,5 @@
+package src;
+
 
 // Test de l'algorithme de Dijkstra basique sur un gros graphe
 public class Test4 {
