@@ -1,4 +1,3 @@
-package src;
 // Test de la classe Graph
 public class Test1 {
 	public static void main(String[] args) throws Exception {
@@ -6,15 +5,15 @@ public class Test1 {
 		
 		Graph g;
 
-		// petit graphe
-		g = new Graph("src/data/mini.gr");
-		System.out.println(g);
+    // petit graphe
+    g = new Graph("data/mini.gr");
+    System.out.println(g);
 
 		// gros graphe
-		g = new Graph("src/data/USA-road-d-NY.gr");
-		g.setCoordinates("src/data/USA-road-d-NY.co");
+		g = new Graph("data/USA-road-d-NY.gr");
+		g.setCoordinates("data/USA-road-d-NY.co");
 		Fenetre f;
-		f = new Fenetre("src/data/NY_Metropolitan.png", "Dijkstra", -73.9987, -73.9437, 40.7523, 40.78085);
+		f = new Fenetre("data/NY_Metropolitan.png", "Dijkstra", -73.9987, -73.9437, 40.7523, 40.78085);
 		g.drawGraph(f);
 	}
 }

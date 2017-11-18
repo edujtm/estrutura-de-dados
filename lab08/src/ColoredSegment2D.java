@@ -1,5 +1,3 @@
-package src;
-
 import java.awt.Color;
 
 // A colored segment in the plane

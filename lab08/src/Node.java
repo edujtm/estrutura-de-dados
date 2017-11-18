@@ -1,5 +1,3 @@
-package src;
-
 @SuppressWarnings("rawtypes")
 // No de um grafo
 class Node implements Comparable {
