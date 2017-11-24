@@ -29,7 +29,25 @@ public class Hierholzer {
     
     private LinkedList<Integer> SearchSimpleCycle(int startVertice){
         /*METODO A SER COMPLETADO*/
-        return null;
+        boolean[] processados = new boolean[graph.n];
+        LinkedList<Integer> path = new LinkedList<Integer>();
+        
+        path.add(startVertice);
+        
+        dfs(path, startVertice, startVertice);
+        
+        return path;
+    }
+    
+    private boolean dfs(LinkedList<Integer> path, int startVertice, int vertice) {
+        
+        for (Integer i : graph.getNeighbours(vertice)) {
+            path.push(i);
+            if (i == startVertice || dfs(path, processados, i)) return true;
+            path.pop();
+        }
+        
+        return false;
     }
     
     public LinkedList<Integer> SearchEulerianCycle(int startVertice){
@@ -195,6 +213,6 @@ public class Hierholzer {
     
     public static void main(String[] args) {
         Hierholzer instance = new Hierholzer();
-        instance.test4();
+        instance.test5();
     }
 }
