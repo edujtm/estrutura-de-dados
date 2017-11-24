@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package euleriancycle;
+
 import java.util.LinkedList;
 import java.awt.Color;
 import java.util.Random;
@@ -29,22 +30,25 @@ public class Hierholzer {
     
     private LinkedList<Integer> SearchSimpleCycle(int startVertice){
         /*METODO A SER COMPLETADO*/
-        boolean[] processados = new boolean[graph.n];
+        Graph copy = graph;
+        
         LinkedList<Integer> path = new LinkedList<Integer>();
         
         path.add(startVertice);
         
-        dfs(path, startVertice, startVertice);
+        dfs(copy, path, startVertice, startVertice);
         
         return path;
     }
     
-    private boolean dfs(LinkedList<Integer> path, int startVertice, int vertice) {
+    private boolean dfs(Graph copy, LinkedList<Integer> path, int startVertice, int vertice) {
         
-        for (Integer i : graph.getNeighbours(vertice)) {
-            path.push(i);
-            if (i == startVertice || dfs(path, processados, i)) return true;
+        for (Edge e : graph.getNeighbours(vertice)) {
+            copy.removeEdge(e);
+            path.push(e.getV());
+            if (e.getV() == startVertice || dfs(copy, path, startVertice, e.getV())) return true;
             path.pop();
+            copy.addEdge(e.getU(), e.getV(), e.getWeight());
         }
         
         return false;
@@ -213,6 +217,6 @@ public class Hierholzer {
     
     public static void main(String[] args) {
         Hierholzer instance = new Hierholzer();
-        instance.test5();
+        instance.test5(0);
     }
 }
