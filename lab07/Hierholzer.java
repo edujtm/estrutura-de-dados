@@ -1,8 +1,9 @@
-package euleriancycle;
+//package euleriancycle;
 
 import java.util.LinkedList;
 import java.awt.Color;
 import java.util.Random;
+import java.util.ListIterator;
 
 public class Hierholzer {
     static private Graph graph;
@@ -38,17 +39,27 @@ public class Hierholzer {
         
         dfs(copy, path, startVertice, startVertice);
         
+        // O if evita que ciclos de 1 vertice apenas V -> V sejam pintados
+        if (path.size() != 1) {
+            Color cycolor = getRadomColor();
+            ListIterator<Integer> it = path.listIterator();
+            while(it.hasNext()) {
+                graph.markNode(it.next(), cycolor);
+            }
+            System.out.println("Ciclo Simples partindo de " + startVertice + ": ");
+            System.out.println(CycleToString(path));
+        }
+        
         return path;
     }
     
     private boolean dfs(Graph copy, LinkedList<Integer> path, int startVertice, int vertice) {
-        
-        for (Edge e : graph.getNeighbours(vertice)) {
+        slow();
+        for (Edge e : copy.getNeighbours(vertice)) {
             copy.removeEdge(e);
-            path.push(e.getV());
-            if (e.getV() == startVertice || dfs(copy, path, startVertice, e.getV())) return true;
-            path.pop();
-            copy.addEdge(e.getU(), e.getV(), e.getWeight());
+            path.add(e.getV());
+            if (e.getV() == startVertice || dfs(copy, path, startVertice, e.getV())) return true; 
+            path.removeLast();  // Backtracking
         }
         
         return false;
@@ -56,7 +67,22 @@ public class Hierholzer {
     
     public LinkedList<Integer> SearchEulerianCycle(int startVertice){
         /*METODO A SER COMPLETADO*/
-        return null;
+        if (!graph.isEulerian()) graph.turnEulerian();
+
+        for (int i = 0; i < graph.nVertices; ++i) {
+            eulerianCycle = SearchSimpleCycle(i);
+            if (eulerianCycle.size() != 1) break;
+        }
+
+        while (graph.nEdges != 0) {
+            for (int index = 0; index < eulerianCycle.size(); ++index) {
+                    int vertex = eulerianCycle.get(index);
+                    LinkedList<Integer> cycle = SearchSimpleCycle(vertex);
+                    if (cycle.size() != 1) InsertCycle(cycle, index);
+            }
+        }
+
+        return eulerianCycle;
     }
     
     /*******************************************************************************************/
@@ -217,6 +243,6 @@ public class Hierholzer {
     
     public static void main(String[] args) {
         Hierholzer instance = new Hierholzer();
-        instance.test5(0);
+        instance.test7();
     }
 }
